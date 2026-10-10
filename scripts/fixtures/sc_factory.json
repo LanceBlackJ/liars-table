@@ -1,0 +1,976 @@
+{
+  "script_id": "sc_factory",
+  "meta": {
+    "title": "厂区最后一班岗",
+    "player_count": 8,
+    "difficulty": "hard",
+    "estimated_minutes": 75,
+    "template": "closed_circle",
+    "tagline": "改制方案明天就签。八个人，一场十二分钟的停电，和一个再也签不了字的厂长。"
+  },
+  "setting": {
+    "public_background": "1998 年冬，国营第七棉纺织厂。改制方案明天上午就要签字。\n厂长邵国栋把八个人留在厂里开了一晚上的会——评估、分流、补偿，每一项都有人不服。\n二十一点整，全厂跳闸，黑了十二分钟。来电之后，有人推开档案室的门，看见邵国栋趴在卷宗上，后脑一片血。",
+    "map": [
+      "厂长办公室",
+      "档案室",
+      "配电房",
+      "织布车间",
+      "食堂",
+      "传达室"
+    ],
+    "time_slots": [
+      "19:30",
+      "20:15",
+      "21:00",
+      "21:40",
+      "22:30"
+    ]
+  },
+  "case": {
+    "victim": "邵国栋",
+    "death_slot": "21:00",
+    "death_location": "档案室",
+    "weapon": "配电房闸刀的铸铁把手",
+    "cause": "后脑遭钝器重击",
+    "body_found_by": "c1",
+    "body_found_slot": "21:40"
+  },
+  "characters": [
+    {
+      "id": "c1",
+      "name": "邵慧兰",
+      "public_role": "厂医务室医生、死者的妹妹",
+      "avatar": {
+        "hair": "bun",
+        "hair_color": "black",
+        "skin": "light",
+        "garment": "teal",
+        "accessory": "none"
+      },
+      "private_secret": "当晚七点你给哥哥开了安眠药——他最近整宿睡不着。你没敢说，因为验尸如果查出安眠药，第一个被怀疑的就是你。",
+      "motive": "你不想让哥哥死，但你确实希望他别再管这个厂了。",
+      "is_murderer": false,
+      "personality": "话不多，习惯先观察再开口。被逼急了会突然很硬。",
+      "speech_style": "短句，很少用形容词。紧张时会重复对方的话。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c1g1",
+          "type": "conceal",
+          "text": "不要让别人知道你当晚给死者开过安眠药"
+        },
+        {
+          "id": "c1g2",
+          "type": "expose",
+          "text": "查出是谁动的手——他是你哥哥"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "name": "岑志远",
+      "public_role": "副厂长",
+      "avatar": {
+        "hair": "short",
+        "hair_color": "gray",
+        "skin": "mid",
+        "garment": "slate",
+        "accessory": "glasses"
+      },
+      "private_secret": "你已经私下和外商签了意向书，条件是改制后你留任。邵国栋今晚当众说要把这件事捅到局里。",
+      "motive": "那份意向书如果曝光，你不只是丢工作。",
+      "is_murderer": false,
+      "personality": "嗓门大，习惯用气势压人。心虚的时候话更多。",
+      "speech_style": "爱讲大道理，一句话里塞很多「我跟你讲」。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c2g1",
+          "type": "conceal",
+          "text": "不要让别人知道你私下签了意向书"
+        },
+        {
+          "id": "c2g2",
+          "type": "acquire",
+          "text": "把你办公室抽屉里那份意向书拿回来"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "name": "苗秀英",
+      "public_role": "会计科长",
+      "avatar": {
+        "hair": "updo",
+        "hair_color": "black",
+        "skin": "mid",
+        "garment": "plum",
+        "accessory": "none"
+      },
+      "private_secret": "改制评估款你挪走了十一万，账做得很干净——除了底稿上有你的私章。邵国栋今天下午翻到了那一页。",
+      "motive": "那笔钱早花在给女儿治病上了，一分也退不回来。",
+      "is_murderer": true,
+      "personality": "待人周到，谁的事都记得。越是紧要关头越显得体贴。",
+      "speech_style": "温和，爱先替别人说话，再不动声色地把话头引开。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c3g1",
+          "type": "conceal",
+          "text": "不要被票出去"
+        },
+        {
+          "id": "c3g2",
+          "type": "conceal",
+          "text": "不要让任何人知道评估款的事"
+        }
+      ],
+      "cover_story": {
+        "claim": "停电的时候我一直在食堂，跟大伙儿在一块儿。",
+        "fake_timeline": [
+          {
+            "slot": "20:15",
+            "claimed_location": "档案室",
+            "claimed_action": "核对评估底稿，二十分钟就出来了。"
+          },
+          {
+            "slot": "21:00",
+            "claimed_location": "食堂",
+            "claimed_action": "灯一灭就在食堂坐着没动，旁边好几个人。"
+          },
+          {
+            "slot": "21:40",
+            "claimed_location": "食堂",
+            "claimed_action": "等来电，帮着找蜡烛。"
+          }
+        ],
+        "weak_points": [
+          {
+            "clue_id": "k5",
+            "risk": "档案室门口的女式煤灰脚印",
+            "fallback": "承认下午去配电房催过修，说煤灰是那时候沾的，顺势把话头引到「谁最后一个进的档案室」。"
+          },
+          {
+            "clue_id": "k17",
+            "risk": "食堂应急灯没亮，alibi 作废",
+            "fallback": "改口说「黑着的时候我一直在跟人说话」，点名一个当时确实在食堂、又说不清细节的人。"
+          },
+          {
+            "clue_id": "k4",
+            "risk": "被撕走的那页底稿上有印泥",
+            "fallback": "咬定卷宗一直摊在桌上，谁都能碰，并提醒大家龙彦当晚也在档案室调过底稿。"
+          }
+        ],
+        "redirect_targets": [
+          "c8",
+          "c4"
+        ],
+        "redirect_hook": "龙彦的数字被当众说站不住，他今晚一直在档案室转；卫长庚整整一小时没在传达室，登记本还是事后补的。"
+      }
+    },
+    {
+      "id": "c4",
+      "name": "卫长庚",
+      "public_role": "保卫科长",
+      "avatar": {
+        "hair": "buzz",
+        "hair_color": "black",
+        "skin": "tan",
+        "garment": "olive",
+        "accessory": "mustache"
+      },
+      "private_secret": "停电那会儿你根本不在岗。你去配电房后面见了收废钢的贩子——厂里那批旧机器，你打算改制之前先卖一部分。",
+      "motive": "你需要那笔钱，也需要没人知道。",
+      "is_murderer": false,
+      "personality": "嘴上讲规矩，做事另一套。被揭穿会先发火。",
+      "speech_style": "爱说「按规定」「照章办事」，但从不说具体哪条。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c4g1",
+          "type": "conceal",
+          "text": "不要让别人知道你当晚脱岗、以及你在卖厂里的旧机器"
+        },
+        {
+          "id": "c4g2",
+          "type": "protect",
+          "text": "别让谭凤玲把职工名册的事捅出去——那会牵出你"
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "name": "谭凤玲",
+      "public_role": "挡车工、工会小组长",
+      "avatar": {
+        "hair": "long",
+        "hair_color": "black",
+        "skin": "mid",
+        "garment": "crimson",
+        "accessory": "none"
+      },
+      "private_secret": "你复印了全厂职工名册和工龄表，准备改制方案一出就带着上访。复印件现在藏在车间的纱包里。",
+      "motive": "这厂里三百多人，改制方案一签，一半人拿三千块走人。",
+      "is_murderer": false,
+      "personality": "直，认死理。说话冲，但不撒谎。",
+      "speech_style": "短促有力，爱反问。「那你说呢？」",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c5g1",
+          "type": "conceal",
+          "text": "不要让别人知道你复印了职工名册"
+        },
+        {
+          "id": "c5g2",
+          "type": "expose",
+          "text": "揭穿岑志远和外商私下有交易"
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "name": "蒲开山",
+      "public_role": "电工班长",
+      "avatar": {
+        "hair": "cap",
+        "hair_color": "darkbrown",
+        "skin": "tan",
+        "garment": "indigo",
+        "accessory": "none"
+      },
+      "private_secret": "配电房的备用钥匙前天被人借走了，你没登记，也没敢问要回来。而且今晚闸刀根本没毛病——「接触不良」是你为了报维修费编的。",
+      "motive": "你怕的不是停电，是查起来发现钥匙不在你手里。",
+      "is_murderer": false,
+      "personality": "老实，但一遇到追责就含糊。",
+      "speech_style": "慢，爱说「这个嘛」，用技术名词绕开问题。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c6g1",
+          "type": "conceal",
+          "text": "不要让别人知道配电房钥匙被你借出去了"
+        },
+        {
+          "id": "c6g2",
+          "type": "conceal",
+          "text": "不要让别人知道闸刀其实没坏"
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "name": "房小满",
+      "public_role": "厂长秘书",
+      "avatar": {
+        "hair": "short",
+        "hair_color": "black",
+        "skin": "light",
+        "garment": "wine",
+        "accessory": "none"
+      },
+      "private_secret": "你和邵国栋的关系厂里已经有人在传。今晚他让你单独收好一份底稿，说「明天要用这个说话」——那份底稿现在不在你手上，你不知道去哪了。",
+      "motive": "他一死，你在这厂里什么都不是。",
+      "is_murderer": false,
+      "personality": "谨慎，习惯把话说一半。",
+      "speech_style": "轻声，用「大概」「好像」把每句话都留个退路。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c7g1",
+          "type": "conceal",
+          "text": "不要让别人确认你和死者的关系"
+        },
+        {
+          "id": "c7g2",
+          "type": "acquire",
+          "text": "找回邵国栋交给你保管的那份底稿"
+        }
+      ],
+      "voice": "f"
+    },
+    {
+      "id": "c8",
+      "name": "龙彦",
+      "public_role": "外聘资产评估师",
+      "avatar": {
+        "hair": "short",
+        "hair_color": "black",
+        "skin": "light",
+        "garment": "ochre",
+        "accessory": "round_glasses"
+      },
+      "private_secret": "你收了一笔钱，把厂区那块地的评估价压低了四成。邵国栋今晚当着所有人说你的数字「站不住」。",
+      "motive": "他要是明天真去局里，你这行就干到头了。",
+      "is_murderer": false,
+      "personality": "客气，滴水不漏。一被质疑就搬术语。",
+      "speech_style": "书面语，爱说「从技术口径讲」。",
+      "sample_lines": [],
+      "personal_goals": [
+        {
+          "id": "c8g1",
+          "type": "conceal",
+          "text": "不要让别人知道你收钱压低了评估价"
+        },
+        {
+          "id": "c8g2",
+          "type": "acquire",
+          "text": "把档案室里那份带你签字的评估底稿拿走"
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "slot": "19:30",
+      "char": "c1",
+      "location": "食堂",
+      "action": "在食堂角落算这个月医务室的药费，故意躲着人。",
+      "witnessed_by": [
+        "c3"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c1",
+      "location": "厂长办公室",
+      "action": "去哥哥办公室，劝他别在评估会上撕破脸。他没抬头。",
+      "witnessed_by": [
+        "c7"
+      ],
+      "observed": [
+        "哥哥桌上摊着一份评估底稿，最上面那页的角是新撕的毛边。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c1",
+      "location": "食堂",
+      "action": "灯一灭就有人喊，她摸黑扶了两个人回座位。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c1",
+      "location": "档案室",
+      "action": "来电后去档案室找哥哥，门虚掩着，她推开就看见了。",
+      "witnessed_by": [],
+      "observed": [
+        "档案室门口地上有一小片煤灰，鞋印很小。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c1",
+      "location": "食堂",
+      "action": "坐在食堂，谁问什么都答不上来。",
+      "witnessed_by": [
+        "c3",
+        "c5"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c2",
+      "location": "厂长办公室",
+      "action": "在厂长办公室跟邵国栋吵评估价，声音大到走廊都听得见。",
+      "witnessed_by": [
+        "c7",
+        "c8"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c2",
+      "location": "食堂",
+      "action": "摔门出来去食堂灌了两杯凉水。",
+      "witnessed_by": [
+        "c5"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c2",
+      "location": "食堂",
+      "action": "停电时和几个人一块儿在食堂，谁也看不清谁。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c2",
+      "location": "厂长办公室",
+      "action": "回办公室，发现抽屉被人动过。",
+      "witnessed_by": [],
+      "observed": [
+        "办公室抽屉的锁没坏，但里面那份意向书被翻动过。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c2",
+      "location": "厂长办公室",
+      "action": "反复强调自己一直在食堂，说了三遍。",
+      "witnessed_by": [
+        "c7"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c3",
+      "location": "食堂",
+      "action": "在食堂吃饭，中途出去接了个电话。",
+      "witnessed_by": [
+        "c1"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c3",
+      "location": "档案室",
+      "action": "以核对底稿为由进了档案室，把评估卷宗搬到桌上。",
+      "witnessed_by": [
+        "c8"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c3",
+      "location": "档案室",
+      "action": "灯灭之后，她用铸铁闸刀把手从背后砸了邵国栋的后脑。然后撕走底稿里有自己私章的那一页。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": true
+    },
+    {
+      "slot": "21:40",
+      "char": "c3",
+      "location": "配电房",
+      "action": "去配电房把闸刀推回去，顺手擦了拉杆。",
+      "witnessed_by": [
+        "c6"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c3",
+      "location": "食堂",
+      "action": "在食堂给所有人倒水，手很稳。",
+      "witnessed_by": [
+        "c1",
+        "c5"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c4",
+      "location": "传达室",
+      "action": "在传达室值班，登记进出。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c4",
+      "location": "传达室",
+      "action": "还在传达室，但登记本从 20:40 起是空的。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c4",
+      "location": "配电房",
+      "action": "他不在岗——去配电房后面见一个不该见的人。",
+      "witnessed_by": [],
+      "observed": [
+        "配电房那扇门是虚掩的，锁没挂上。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c4",
+      "location": "传达室",
+      "action": "回传达室，把空掉的那几行补写上。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c4",
+      "location": "档案室",
+      "action": "去档案室看现场，一句话没说。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c5",
+      "location": "织布车间",
+      "action": "在车间守着最后一班机器，等停机。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c5",
+      "location": "食堂",
+      "action": "去食堂拿饭，顺手把一沓复印件塞进饭盒下面。",
+      "witnessed_by": [
+        "c2"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c5",
+      "location": "织布车间",
+      "action": "停电时一个人在车间，机器一停就是死寂。",
+      "witnessed_by": [],
+      "observed": [
+        "车间黑下来的时候，她听见档案室方向有闷响，只有一下。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c5",
+      "location": "织布车间",
+      "action": "还在车间，把复印件藏进纱包里。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c5",
+      "location": "食堂",
+      "action": "在食堂,一直看着门口。",
+      "witnessed_by": [
+        "c1",
+        "c3"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c6",
+      "location": "配电房",
+      "action": "在配电房检修，登记本上写了「闸刀接触不良」。",
+      "witnessed_by": [],
+      "observed": [
+        "检修时闸刀是好的，他在登记本上写「接触不良」是为了走维修流程报账。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c6",
+      "location": "织布车间",
+      "action": "去车间看电机，钥匙串少了一把他没发现。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c6",
+      "location": "食堂",
+      "action": "灯灭时他在食堂，第一个喊「我去合闸」，但没动。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c6",
+      "location": "配电房",
+      "action": "去配电房合闸，发现闸刀已经被推上去了。",
+      "witnessed_by": [
+        "c3"
+      ],
+      "observed": [
+        "闸刀已经被推上去了，拉杆下方有一道新刮痕。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c6",
+      "location": "配电房",
+      "action": "守在配电房，不让人靠近。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c7",
+      "location": "厂长办公室",
+      "action": "在办公室整理评估会材料，邵国栋让她把一份底稿单独收好。",
+      "witnessed_by": [
+        "c2",
+        "c8"
+      ],
+      "observed": [
+        "邵国栋让她把一份底稿单独收好，说「明天要用这个说话」。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c7",
+      "location": "厂长办公室",
+      "action": "还在办公室，听见岑志远摔门。",
+      "witnessed_by": [
+        "c1"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c7",
+      "location": "传达室",
+      "action": "停电时她在传达室打电话，电话也断了。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c7",
+      "location": "食堂",
+      "action": "回食堂，坐着没说话。",
+      "witnessed_by": [
+        "c8"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c7",
+      "location": "厂长办公室",
+      "action": "在办公室把材料一份份收起来，收得很慢。",
+      "witnessed_by": [
+        "c2"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "19:30",
+      "char": "c8",
+      "location": "厂长办公室",
+      "action": "在办公室做最后的评估陈述，被邵国栋当场质疑。",
+      "witnessed_by": [
+        "c2",
+        "c7"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "20:15",
+      "char": "c8",
+      "location": "档案室",
+      "action": "去档案室调底稿，想证明自己的数字站得住。",
+      "witnessed_by": [
+        "c3"
+      ],
+      "observed": [
+        "档案室的评估卷宗被人从架子上搬到了桌上，不是他搬的。"
+      ],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:00",
+      "char": "c8",
+      "location": "食堂",
+      "action": "停电时在食堂，抱怨这厂连电都保不住。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "21:40",
+      "char": "c8",
+      "location": "食堂",
+      "action": "在食堂等来电，一直看表。",
+      "witnessed_by": [
+        "c7"
+      ],
+      "observed": [],
+      "is_crime_action": false
+    },
+    {
+      "slot": "22:30",
+      "char": "c8",
+      "location": "传达室",
+      "action": "去传达室要打长途，被拦下。",
+      "witnessed_by": [],
+      "observed": [],
+      "is_crime_action": false
+    }
+  ],
+  "clues": [
+    {
+      "id": "k1",
+      "location": "配电房",
+      "text": "闸刀拉杆下方有一道新鲜刮痕，边缘发亮。过载跳闸是自己弹开的，不会在这个位置留下刮痕——这一刀是**有人用手拉下来的**。",
+      "reveals": "停电是人为的",
+      "points_to": [
+        "c3"
+      ],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k2",
+      "location": "传达室",
+      "text": "墙上的挂钟停在 **21:03**。值班记录上写着「21:15 来电」。",
+      "reveals": "停电持续了约十二分钟",
+      "points_to": [],
+      "is_red_herring": false,
+      "difficulty": 1
+    },
+    {
+      "id": "k3",
+      "location": "传达室",
+      "text": "厂区平面图。从档案室走到配电房，要绕过锅炉房，**单程约四分钟**。",
+      "reveals": "来回一趟至少八分钟",
+      "points_to": [],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k4",
+      "location": "档案室",
+      "text": "地上散落着评估卷宗。翻到中间，有一页被整齐撕走了，留下的毛边上还压着半个印泥印子。",
+      "reveals": "有人撕走了带自己印章的那一页",
+      "points_to": [
+        "c3"
+      ],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k5",
+      "location": "档案室",
+      "text": "门口地面有一小片煤灰脚印，**尺码很小，是女式的**。厂区里只有配电房门口堆煤。",
+      "reveals": "有人从配电房走到了档案室",
+      "points_to": [
+        "c1",
+        "c3",
+        "c5",
+        "c7"
+      ],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k6",
+      "location": "配电房",
+      "text": "钥匙登记本。前天有一行借出记录，签名被涂改过，看不清是谁。",
+      "reveals": "配电房钥匙外流",
+      "points_to": [
+        "c6"
+      ],
+      "is_red_herring": false,
+      "difficulty": 1
+    },
+    {
+      "id": "k7",
+      "location": "厂长办公室",
+      "text": "抽屉里一份中外合资意向书，签字栏是岑志远，日期在半个月前。",
+      "reveals": "副厂长私下和外商有交易",
+      "points_to": [
+        "c2"
+      ],
+      "is_red_herring": false,
+      "difficulty": 1
+    },
+    {
+      "id": "k8",
+      "location": "厂长办公室",
+      "text": "台历上今天这一格写着两个字：「对账」，后面画了个圈。",
+      "reveals": "死者今天在查账",
+      "points_to": [
+        "c3"
+      ],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k9",
+      "location": "食堂",
+      "text": "泔水桶里有一沓被撕碎又泡烂的纸，能辨认出「工龄」「补偿」几个字。",
+      "reveals": "有人销毁了职工名单相关的东西",
+      "points_to": [
+        "c5"
+      ],
+      "is_red_herring": true,
+      "difficulty": 1
+    },
+    {
+      "id": "k10",
+      "location": "食堂",
+      "text": "长条桌下有半盒安眠药，铝箔背板上是医务室的字迹。",
+      "reveals": "医务室的人当晚带着安眠药",
+      "points_to": [
+        "c1"
+      ],
+      "is_red_herring": true,
+      "difficulty": 1
+    },
+    {
+      "id": "k11",
+      "location": "织布车间",
+      "text": "十二号机后面的纱包里，塞着一沓职工名册复印件。",
+      "reveals": "有人偷偷复印了职工名册",
+      "points_to": [
+        "c5"
+      ],
+      "is_red_herring": false,
+      "difficulty": 1
+    },
+    {
+      "id": "k12",
+      "location": "织布车间",
+      "text": "机台旁的记录板上，最后一行停机时间写的是 **21:00**，字迹被拖长了一道——写的时候手在抖，或者灯灭了。",
+      "reveals": "停电时车间有人在",
+      "points_to": [
+        "c5"
+      ],
+      "is_red_herring": false,
+      "difficulty": 1
+    },
+    {
+      "id": "k13",
+      "location": "档案室",
+      "text": "死者右手攥着一枚**工装纽扣**，线头是旧的。",
+      "reveals": "死者手里有一枚纽扣",
+      "points_to": [
+        "c4"
+      ],
+      "is_red_herring": true,
+      "difficulty": 1
+    },
+    {
+      "id": "k14",
+      "location": "传达室",
+      "text": "值班登记本 20:40 到 21:40 之间整整一个小时是空的，后面几行的墨色明显比前面新。",
+      "reveals": "保卫科长当晚脱岗，事后补写了记录",
+      "points_to": [
+        "c4"
+      ],
+      "is_red_herring": false,
+      "difficulty": 1
+    },
+    {
+      "id": "k15",
+      "location": "配电房",
+      "text": "配电房后墙外的地上有两串脚印，一串大码解放鞋，一串是外面来的皮鞋，在墙根站了很久。",
+      "reveals": "有人在配电房外私下见面",
+      "points_to": [
+        "c4"
+      ],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k16",
+      "location": "厂长办公室",
+      "text": "废纸篓里有一张揉皱的评估底稿复印件，右下角签着「龙彦」，旁边一行小字：数字对不上。",
+      "reveals": "死者已经在查评估师的数字",
+      "points_to": [
+        "c8"
+      ],
+      "is_red_herring": false,
+      "difficulty": 2
+    },
+    {
+      "id": "k17",
+      "location": "食堂",
+      "text": "食堂的电闸箱是独立回路，**停电时食堂应急灯亮着**——但当晚应急灯的电池是空的，没人换过。",
+      "reveals": "食堂当晚也是全黑的，谁都证明不了谁",
+      "points_to": [],
+      "is_red_herring": false,
+      "difficulty": 3
+    },
+    {
+      "id": "k18",
+      "location": "档案室",
+      "text": "邵国栋后脑的伤口呈条形，边缘有铸铁的锈迹。配电房那把闸刀的把手，正是铸铁的。",
+      "reveals": "凶器来自配电房",
+      "points_to": [
+        "c3"
+      ],
+      "is_red_herring": false,
+      "difficulty": 3
+    }
+  ],
+  "interludes": [
+    {
+      "at": "act2",
+      "title": "法医的回话",
+      "text": "局里法医的电话打到传达室来了。\n\n「死亡时间不是你们说的九点。胃内容物和体温一起看，**再往前推四十分钟到一小时**——也就是八点一刻前后，人就已经不行了。」\n\n八点一刻。那会儿灯还亮着。\n你们刚才围着「停电十二分钟谁去了哪」争了半天——那段时间，邵国栋可能早就躺在档案室了。",
+      "effect": "reveal_clue",
+      "clue_id": "k8"
+    }
+  ],
+  "solution": {
+    "murderer": "c3",
+    "reasoning_chain": [
+      "配电房闸刀是被人用手拉下来的（k1），停电不是事故，是有人制造的。",
+      "停电持续十二分钟（k2）；档案室到配电房单程四分钟（k3），来回至少八分钟——制造停电的人必须有连续八分钟以上说不清的空档。",
+      "食堂的应急灯电池是空的（k17），所以停电时食堂也全黑，「我们一直在一起」这句话对谁都不成立，alibi 全部作废。",
+      "档案室门口有女式煤灰脚印（k5），煤只堆在配电房门口——这个人从配电房走到了档案室。厂里在场的女性中，只有苗秀英当晚去过配电房。",
+      "评估卷宗被撕走一页，毛边上压着印泥（k4）；死者台历今天写着「对账」（k8）——他在查账，撕走的正是有私章的那一页。",
+      "凶器是铸铁的（k18），和配电房闸刀把手一致——她拉闸时顺手拆了把手。",
+      "苗秀英挪用了改制评估款，底稿上有她的私章。邵国栋下午翻到了那一页。"
+    ],
+    "minimum_clues_required": [
+      "k1",
+      "k2",
+      "k3",
+      "k5",
+      "k17",
+      "k4",
+      "k18"
+    ]
+  }
+}

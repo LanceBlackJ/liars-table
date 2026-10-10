@@ -1,0 +1,296 @@
+/* ══════════════════════════════════════════════════════════════
+   《探案》
+   单独一个文件——这一款的界面和另外三款（日志+行动区+名单）
+   结构完全不同，塞进 style.css 会互相干扰。
+   ══════════════════════════════════════════════════════════════ */
+
+.caseShell {
+  /* 和另外三款同一套三栏骨架，视觉上属于同一个应用。
+     左栏是「此刻能做什么」，中栏读，右栏是攒下的东西。 */
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr) 286px;
+  gap: 16px; padding: 16px 20px 18px;
+  flex: 1; min-height: 0; overflow: hidden; align-items: stretch;
+}
+.caseCol { min-height: 0; display: flex; flex-direction: column; }
+.caseMain { gap: 12px; position: relative; }
+.caseHere { padding: 0 0 14px; }
+
+/* ── 左栏：你在哪儿、能做什么 ─────────────────────── */
+.hereHd {
+  padding: 16px 16px 14px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--accent-wash), transparent 90%);
+}
+.hereName {
+  font-family: var(--serif); font-size: 20px; letter-spacing: 3px;
+  color: var(--accent); margin-bottom: 7px;
+}
+/* 没有画了，这段就是场景。给足行距，让人愿意读 */
+.hereDesc { font-size: 13.5px; line-height: 1.78; color: var(--text-dim); }
+
+.csHd {
+  margin: 16px 16px 7px; font-size: 12px; letter-spacing: 2.5px;
+  color: var(--text-faint); font-weight: 600; text-transform: none;
+}
+.optList { padding: 0 10px; }
+.optList .noOne, .optList .muted {
+  margin: 2px 6px 4px; font-size: 13px; color: var(--text-faint);
+}
+
+/* ── 文字选项：这一款的核心交互，做成一整行可点的条 ── */
+.opt {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 11px; margin-bottom: 3px; text-align: left;
+  background: transparent; border: 1px solid transparent; border-radius: 7px;
+  font-size: 14px; line-height: 1.5; color: var(--text);
+  transition: background .14s, border-color .14s, color .14s, transform .1s;
+}
+.opt:hover:not(:disabled) {
+  background: var(--bg-raised); border-color: var(--line-strong);
+  color: var(--accent); transform: translateX(2px);
+}
+.opt:active:not(:disabled) { transform: translateX(2px) translateY(1px); }
+.opt .oMark { flex: 0 0 auto; width: 15px; text-align: center; color: var(--text-faint); font-size: 13px; }
+.opt .oTxt { flex: 1; min-width: 0; }
+.opt .oTag {
+  flex: 0 0 auto; font-style: normal; font-size: 11px; color: var(--text-faint);
+  border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px;
+}
+.opt .oTag.on { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-wash); }
+
+/* 查过的东西压暗，但仍可再点——重看一遍是合理的 */
+.opt.done { color: var(--text-faint); }
+.opt.done .oMark { color: var(--ok); }
+.opt.done:hover { color: var(--text-dim); }
+
+/* 人：带头像，名字和身份两行 */
+.opt.person { padding: 7px 11px; }
+.opt.person .oTxt { display: flex; flex-direction: column; line-height: 1.3; }
+.opt.person .oTxt b { font-size: 14px; font-weight: 600; }
+.opt.person .oTxt i { font-style: normal; font-size: 11.5px; color: var(--text-faint); }
+.opt.person.on { background: var(--accent-wash); border-color: var(--accent-dim); }
+.opt.person.on .oTxt b { color: var(--accent); }
+
+/* 去哪儿 */
+.opt.here { opacity: .55; }
+.opt.locked .oTxt { color: var(--text-faint); }
+.opt.goItem:disabled { cursor: default; }
+
+/* ── 调查日志 ──────────────────────────────────────── */
+.caseLog {
+  flex: 1; min-height: 0; overflow-y: auto; padding: 18px 20px;
+  background: var(--bg-panel); border: 1px solid var(--line);
+  border-radius: var(--r); scroll-behavior: smooth;
+}
+.ce { margin-bottom: 15px; line-height: 1.82; animation: fade .3s ease; }
+.ce .ceHd { font-size: 13px; letter-spacing: 2px; color: var(--text-faint); margin-bottom: 4px; }
+.ce .ceSub { font-size: 13px; color: var(--text-dim); margin-top: 5px; }
+
+.cBrief { color: var(--text-dim); border-left: 2px solid var(--line-strong); padding-left: 15px; }
+.cScene {
+  border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft);
+  padding: 13px 0; margin: 18px 0;
+}
+.cScene > b { font-family: var(--serif); font-size: 17px; letter-spacing: 2px; color: var(--accent); }
+.cExam {
+  background: var(--bg-sunken); padding: 13px 16px; border-radius: var(--r);
+  border-left: 2px solid var(--line-strong);
+}
+.cGain { color: var(--ok); font-weight: 600; }
+.cGain .ceSub { color: var(--text-dim); font-weight: 400; }
+.cDeduce {
+  background: linear-gradient(160deg, var(--accent-wash), transparent 70%);
+  border: 1px solid var(--accent-dim); border-left: 3px solid var(--accent);
+  padding: 15px 17px; border-radius: var(--r);
+}
+.cDeduce .ceHd { color: var(--accent); }
+.cDeduce .ceSub { color: var(--accent); font-weight: 600; }
+.cAsk { color: var(--text-dim); padding-left: 15px; border-left: 2px solid var(--ok-dim); }
+.cAsk b { color: var(--ok); }
+.cSay { display: flex; gap: 12px; }
+.cSay b { display: block; font-size: 14.5px; margin-bottom: 3px; }
+.cShow { color: var(--accent); font-size: 13.5px; text-align: center; padding: 7px 0; }
+.cCrack {
+  background: linear-gradient(160deg, rgba(224,102,74,.10), transparent 72%);
+  border-left: 3px solid var(--danger); padding: 14px 17px;
+  border-radius: 0 var(--r) var(--r) 0;
+}
+.cCrack .ceHd { color: var(--danger); letter-spacing: 3px; font-size: 14px; }
+.cBlocked, .cNote { color: var(--text-faint); font-style: italic; }
+.cErr { color: var(--danger); font-size: 12.5px; }
+
+/* ── 行动区 ────────────────────────────────────────── */
+.caseAct { flex: 0 0 auto; max-height: 40vh; overflow-y: auto; }
+.hintLine { color: var(--text-faint); margin: 0; padding: 10px 2px; font-size: 13.5px; }
+.talkBar { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+.tbWho { font-size: 13.5px; color: var(--text-dim); }
+.tbWho b { color: var(--accent); }
+.tbEnd { margin-left: auto; padding: 5px 13px; font-size: 12.5px; }
+.askRow { display: flex; gap: 9px; }
+.askRow input { flex: 1; }
+.showRow { margin-top: 11px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.srHd { font-size: 12.5px; color: var(--text-faint); }
+.srItem { padding: 6px 13px; font-size: 12.5px; border-radius: 20px; }
+.srItem:hover { border-color: var(--danger); color: var(--danger); }
+
+/* ── 右栏 ──────────────────────────────────────────── */
+.caseSide { padding: 0; overflow: hidden; }
+.caseSide .csHd {
+  display: flex; align-items: baseline; gap: 9px;
+  margin: 16px 16px 4px; padding-bottom: 9px; border-bottom: 1px solid var(--line);
+}
+.caseSide .csHd b { margin-left: auto; color: var(--accent); font-size: 13px; letter-spacing: 0; }
+.csPane { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 8px; }
+.evItem {
+  padding: 10px 0; border-bottom: 1px solid var(--line-soft);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.evItem b { font-size: 13.5px; color: var(--accent); }
+.evItem span { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+.accuseBtn { flex: 0 0 auto; margin: 10px 16px 16px; }
+
+/* ── 指认 ──────────────────────────────────────────── */
+.accusePanel { padding: 4px 2px 8px; }
+.apWarn {
+  color: var(--danger); font-size: 13px; margin-bottom: 14px;
+  padding: 9px 13px; background: var(--danger-wash);
+  border: 1px solid var(--danger-dim); border-radius: 6px;
+}
+.acGroup { margin-bottom: 14px; }
+.acHd { font-size: 12.5px; letter-spacing: 2px; color: var(--text-faint); margin-bottom: 7px; }
+.acOpt {
+  display: block; width: 100%; text-align: left; margin-bottom: 6px;
+  font-size: 13.5px; line-height: 1.6; padding: 9px 14px;
+}
+.acOpt i { font-style: normal; color: var(--text-faint); font-size: 12px; margin-left: 8px; }
+.acOpt.on { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+
+/* ── 结案 ──────────────────────────────────────────── */
+.vGrid { margin: 16px 0; }
+.vRow {
+  display: grid; grid-template-columns: 26px 56px 1fr 1fr; gap: 10px;
+  align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line-soft);
+  font-size: 13.5px;
+}
+.vRow b { color: var(--text-dim); }
+.vRow .ok { color: var(--ok); font-weight: 700; }
+.vRow .no { color: var(--danger); font-weight: 700; }
+.vStats { font-size: 12.5px; color: var(--text-faint); margin-bottom: 16px; }
+.vExp {
+  background: var(--bg-panel); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 17px 19px; line-height: 1.9;
+}
+
+/* 窄屏：三栏塌成一栏，中间的叙述区排到最前面 */
+@media (max-width: 1180px) {
+  .caseShell { grid-template-columns: 1fr; height: auto; overflow-y: auto; }
+  body.locked { overflow: auto; }
+  .caseMain { order: -1; }
+  .caseLog { max-height: 52vh; }
+  .caseHere, .caseSide { max-height: none; }
+  .caseSide .csPane { max-height: 40vh; }
+}
+
+/* 案件文本里 **强调** 出来的关键处 */
+.ce b.key { color: var(--accent); font-weight: 700; }
+.cCrack b.key, .cGain b.key { color: inherit; }
+
+/* 结案对照：答对只印一遍，答错才左右并列 */
+.vRow.right .vOne { grid-column: 3 / -1; color: var(--text); }
+.vRow.wrong .vTruth { color: var(--ok); }
+.vRow.wrong span:not(.vTruth) { color: var(--text-faint); text-decoration: line-through; }
+
+/* ── 证物：可展开 ──────────────────────────────────── */
+.caseSide .csHd b { color: var(--accent); font-size: 13px; letter-spacing: 0; }
+.evItem {
+  padding: 0; border-bottom: 1px solid var(--line-soft);
+  cursor: pointer; display: block;
+}
+.evItem .evHd {
+  display: flex; align-items: center; gap: 8px; padding: 11px 2px;
+  transition: color .14s;
+}
+.evItem .evMark { color: var(--accent-mid); font-size: 12px; flex: 0 0 auto; }
+.evItem.derived .evMark { color: #8fa5e8; }
+.evItem .evHd b { flex: 1; min-width: 0; font-size: 13.5px; color: var(--accent); font-weight: 600; }
+.evItem.derived .evHd b { color: #a8bbe8; }
+.evItem .evChev { color: var(--text-faint); font-size: 15px; flex: 0 0 auto; }
+.evItem:hover .evHd b { color: #f0d98a; }
+/* 收起时把详情彻底藏掉——原来是直接铺出来，证物一多右栏就成了一堵字墙 */
+.evItem .evBody { display: none; padding: 0 2px 12px 21px; }
+.evItem.open .evBody { display: block; animation: fade .2s ease; }
+.evItem .evBody p { margin: 0; font-size: 12.8px; line-height: 1.72; color: var(--text-dim); }
+.evItem .evWhere {
+  margin-top: 8px; font-size: 11.5px; color: var(--text-faint);
+  padding-left: 9px; border-left: 2px solid var(--line);
+}
+
+/* ── 中栏对话模式 ──────────────────────────────────── */
+.caseLog.talkMode { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+.tkHead {
+  display: flex; align-items: center; gap: 13px; flex: 0 0 auto;
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--accent-wash), transparent);
+}
+.tkHead div { display: flex; flex-direction: column; line-height: 1.35; flex: 1; min-width: 0; }
+.tkHead b { font-family: var(--serif); font-size: 17px; letter-spacing: 1.5px; }
+.tkHead i { font-style: normal; font-size: 12.5px; color: var(--text-faint); }
+.tkBack { flex: 0 0 auto; font-size: 13px; padding: 6px 13px; }
+.tkBody { flex: 1; min-height: 0; overflow-y: auto; padding: 18px 20px; }
+.tkEmpty { padding: 24px 0; text-align: center; }
+
+/* 调查流里被折起来的问话标记 */
+.ce.cTalkMark {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 9px 13px; margin: 12px 0; border-radius: 6px;
+  border: 1px dashed var(--line-strong); color: var(--text-dim); font-size: 13px;
+  transition: border-color .14s, color .14s;
+}
+.ce.cTalkMark b { color: var(--text); }
+.ce.cTalkMark span { margin-left: auto; font-size: 12px; color: var(--text-faint); }
+.ce.cTalkMark:hover { border-color: var(--accent-mid); color: var(--accent); }
+.ce.cTalkMark:hover span { color: var(--accent); }
+
+/* ── 指认：人物选项 ────────────────────────────────── */
+.acPeople { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; }
+.acOpt {
+  display: flex; align-items: center; gap: 9px; text-align: left;
+  padding: 8px 12px; font-size: 13.5px;
+}
+.acOpt span { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+.acOpt i { font-style: normal; font-size: 11px; color: var(--text-faint); }
+.acOpt.on { border-color: var(--accent); background: var(--accent-wash); }
+.acOpt.on span { color: var(--accent); }
+.accusePanel textarea { margin-top: 6px; }
+.accusePanel .acGroup { margin-bottom: 18px; }
+.accusePanel .muted { font-size: 12.5px; margin: 4px 0 0; }
+
+/* ── 结案评分 ──────────────────────────────────────── */
+.verdict .vScore {
+  margin-top: 12px; font-family: var(--serif); font-size: 30px;
+  letter-spacing: 3px; color: var(--vc, var(--accent));
+}
+.gRow {
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 13px 16px; margin-bottom: 11px; background: var(--bg-panel);
+}
+.gRow .gHd { display: flex; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+.gRow .gHd b { font-size: 15px; letter-spacing: 2px; }
+.gRow .gDots { letter-spacing: 3px; font-size: 12px; }
+.gRow .gScore { margin-left: auto; font-size: 12.5px; color: var(--text-faint); }
+.gRow .gMine, .gRow .gTruth {
+  font-size: 13.5px; line-height: 1.72; margin-top: 5px;
+  display: grid; grid-template-columns: 52px 1fr; gap: 10px;
+}
+.gRow i { font-style: normal; font-size: 11.5px; color: var(--text-faint); padding-top: 3px; }
+.gRow .gTruth { color: var(--ok); }
+.gRow .gCmt {
+  margin-top: 10px; padding: 8px 12px; border-radius: 6px;
+  background: var(--bg-sunken); font-size: 12.8px; line-height: 1.7; color: var(--text-dim);
+}
+.gRow.sFull { border-color: var(--ok-dim); }
+.gRow.sFull .gHd b, .gRow.sFull .gDots { color: var(--ok); }
+.gRow.sHalf { border-color: #7a5a1e; }
+.gRow.sHalf .gHd b, .gRow.sHalf .gDots { color: #d9903c; }
+.gRow.sNone { border-color: var(--danger-dim); }
+.gRow.sNone .gHd b, .gRow.sNone .gDots { color: var(--danger); }

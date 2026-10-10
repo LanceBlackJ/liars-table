@@ -1,0 +1,268 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 桌游厅</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/case.css">
+
+<header>
+  <h1 id="brandTitle">AI 桌游厅</h1>
+  <button id="btnHome" class="ghost hidden">← 返回大厅</button>
+  <span class="spacer"></span>
+  <span id="phaseBadge" class="badge hidden"></span>
+
+  <div class="bgmBox">
+    <button id="btnBgm" class="ghost" title="背景音乐" aria-label="背景音乐">♪</button>
+    <div id="bgmMenu" class="bgmMenu hidden">
+      <div class="bgmTitle">背景音乐</div>
+      <div id="bgmList"></div>
+      <label class="bgmVol">音量
+        <input id="bgmVol" type="range" min="0" max="60" value="10">
+      </label>
+      <p class="bgmNote">曲子是浏览器实时合成的，没有音频文件。<br>每个本子有专属曲目，进本时自动切换。</p>
+    </div>
+  </div>
+
+  <button id="btnVoice" class="ghost hidden" title="朗读发言">🔊</button>
+  <button id="btnPad" class="ghost hidden" title="记事本">📝</button>
+  <button id="btnCfg" class="ghost" title="模型设置（接口地址 / 密钥 / 模型）" aria-label="模型设置">⚙</button>
+  <span id="healthBadge" class="badge">检测中…</span>
+</header>
+
+<!-- 通用记事本抽屉。四款游戏共用，随手记，只有你看得到 -->
+<div id="padDrawer" class="padDrawer hidden">
+  <div class="padHd">
+    <b>记事本</b>
+    <span id="padState" class="padState"></span>
+    <button id="padClose" class="ghost">收起</button>
+  </div>
+  <textarea id="padText" placeholder="随手记点什么——谁说了什么、哪里对不上、待会儿要问谁…&#10;只有你看得到，AI 读不到。"></textarea>
+</div>
+
+<div id="err" class="hidden"></div>
+
+<!-- ══════════ 大厅 ══════════ -->
+<section id="v-home" class="view wrap">
+  <div class="hero">
+    <div class="heroGlow" aria-hidden="true"></div>
+    <div class="heroKicker">AI 桌游厅</div>
+    <h2 class="heroTitle">今晚，谁在说谎？</h2>
+    <p class="heroSub">AI 扮演的嫌疑人会撒谎，也会露馅。读本、搜证、对质，或者让 AI 现写一个新案子。</p>
+    <div class="heroActions">
+      <button id="heroPlay" class="primary heroBtn">开一局剧本杀</button>
+      <button id="heroGen" class="heroBtn ghostBtn">✨ AI 生成新本</button>
+    </div>
+  </div>
+
+  <h2 class="section">选一款游戏</h2>
+  <div id="gameCards" class="cards gameGrid"></div>
+
+  <h2 class="section">继续之前的对局</h2>
+  <div id="saves" class="saveList"><p class="muted">读取中…</p></div>
+</section>
+
+<!-- ══════════ 狼人杀 / 谁是卧底：开局配置 ══════════ -->
+<section id="v-setup" class="view wrap hidden">
+  <h2 class="section" id="setupTitle"></h2>
+  <p class="muted" id="setupDesc" style="max-width:760px"></p>
+
+  <div class="setupCard">
+    <div class="setupRow">
+      <label for="pcRange">总人数</label>
+      <div class="rangeWrap">
+        <input id="pcRange" type="range" min="6" max="12" value="9">
+        <span class="rangeVal" id="pcVal">9</span>
+      </div>
+    </div>
+    <div id="rolesBox">
+      <div class="setupHint">阵营配置</div>
+      <div class="roleGridCfg" id="roleCfg"></div>
+      <p class="muted" id="cfgSummary"></p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:22px">
+    <button id="btnSetupGo" class="primary">开始</button>
+    <button id="btnSetupPreset">恢复标准板</button>
+  </div>
+</section>
+
+<!-- ══════════ 剧本杀：选本 ══════════ -->
+<section id="v-scripts" class="view wrap hidden">
+  <div class="sectionHead">
+    <h2 class="section" id="scriptsTitle">选一个本</h2>
+    <button id="btnGen" class="ghost genBtn" title="让大模型现写一个新本子">✨ AI 生成新本</button>
+  </div>
+  <div id="scriptFilters" class="chips"></div>
+  <div id="scriptCards" class="cards"></div>
+</section>
+
+<!-- 模型设置 -->
+<div id="cfgModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="cfgTitleH">
+  <div class="modalBox">
+    <div class="modalHd"><b id="cfgTitleH">⚙ 模型设置</b><button id="cfgClose" class="ghost" aria-label="关闭">✕</button></div>
+    <p class="genNote">填一个 OpenAI 兼容的接口（只要支持 <code>/chat/completions</code>）。保存后立即生效，不用重启；
+      设置存在本机 <code>data/user_config.json</code>，不会上传。密钥只存在运行服务的这台电脑上。</p>
+    <label class="fld">常见服务（只是帮你填个默认值，以服务商文档为准）
+      <select id="cfgPreset">
+        <option value="">— 选一个，或手填 —</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="openai">OpenAI</option>
+        <option value="dashscope">阿里云百炼（通义千问）</option>
+        <option value="siliconflow">硅基流动</option>
+      </select>
+    </label>
+    <label class="fld">接口地址（Base URL）
+      <input id="cfgBase" placeholder="https://api.deepseek.com/v1" autocomplete="off">
+    </label>
+    <label class="fld">API 密钥 <span id="cfgKeyHint" class="cfgHint"></span>
+      <input id="cfgKey" type="password" placeholder="留空则不修改" autocomplete="new-password">
+    </label>
+    <div class="fldRow2">
+      <label class="fld">对话模型（角色扮演、出题）
+        <input id="cfgChat" autocomplete="off">
+      </label>
+      <label class="fld">推理模型（生成本子的设定阶段）
+        <input id="cfgReason" autocomplete="off">
+      </label>
+    </div>
+    <label class="chk"><input id="cfgProxy" type="checkbox"> 绕过系统代理（接口在内网、本机又开了代理时勾上；连海外服务且需要代理时不要勾）</label>
+    <div id="cfgMsg" class="genErr"></div>
+    <div class="modalBtns">
+      <button id="cfgReset" title="丢掉这里保存的设置，回到 .env">恢复默认</button>
+      <button id="cfgTest">测试连接</button>
+      <button id="cfgSave" class="primary">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI 生成本子 -->
+<div id="genModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="genTitleH">
+  <div class="modalBox">
+    <div class="modalHd"><b id="genTitleH">✨ AI 生成新本</b><button id="genClose" class="ghost" aria-label="关闭">✕</button></div>
+    <div id="genForm">
+      <label class="fld">主题 / 设定
+        <textarea id="genTheme" rows="3" maxlength="400"
+          placeholder="例：民国上海百乐门后台，当红歌女在演出间隙被毒死&#10;例：北宋贡院锁院夜，主考官死在弥封所&#10;例：暴风雪封山的滑雪旅馆，老板被人推下楼梯"></textarea>
+      </label>
+      <div class="fld">生成什么
+        <div class="chkRow">
+          <label class="chk"><input id="genWithScript" type="checkbox" checked> 剧本杀本子</label>
+          <label class="chk"><input id="genWithCase" type="checkbox" checked> 探案案子（同一个故事，单人玩）</label>
+        </div>
+      </div>
+      <div class="fldRow">
+        <label class="fld">嫌疑人
+          <select id="genSuspects"><option>3</option><option selected>4</option><option>5</option><option>6</option></select>
+        </label>
+        <label class="fld">证人
+          <select id="genNpc"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select>
+        </label>
+        <label class="fld">幕数
+          <select id="genActs"><option value="2" selected>两幕</option><option value="3">三幕</option></select>
+        </label>
+        <label class="fld">难度
+          <select id="genDiff"><option value="easy">简单</option><option value="medium" selected>中等</option><option value="hard">硬核</option></select>
+        </label>
+      </div>
+      <label class="fld">书名（可不填，让它自己起）
+        <input id="genTitle" maxlength="20">
+      </label>
+      <p class="genNote">生成要几分钟（两样都选约 6–8 分钟）：先设计设定，再分别写角色、行踪、线索和答卷，最后用本库同一套自检校验，
+        不过会自动让模型修补。每个地点的线索、每个场景的可查热区都有保底数量，保证怎么搜都不会翻空；
+        探案案子还会模拟一遍“从起始场景能不能拿到全部关键物证”，死局不会上架。
+        生成的比手工精写的短，质量也不稳定。</p>
+      <div id="genMsg" class="genErr"></div>
+      <div class="modalBtns"><button id="genCancel">取消</button><button id="genGo" class="primary">开始生成</button></div>
+    </div>
+    <div id="genRun" class="hidden">
+      <div id="genStage" class="genStage"></div>
+      <div class="genBarWrap"><div id="genBar" class="genBar"></div></div>
+      <div id="genLog" class="genLog"></div>
+      <div id="genRunBtns" class="modalBtns"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 剧本杀：选角色 ══════════ -->
+<section id="v-roles" class="view wrap hidden">
+  <h2 class="section" id="rolesTitle"></h2>
+  <p class="muted" id="rolesBg" style="max-width:900px"></p>
+  <p class="muted">同一个本换个角色，你看到的信息完全不同——可以玩 6 次。</p>
+  <div id="roleGrid" class="roleGrid" role="radiogroup" aria-label="选择你扮演的角色"></div>
+  <div class="row" style="margin-top:22px">
+    <button id="btnStart" class="primary" disabled>开始</button>
+  </div>
+</section>
+
+<!-- ══════════ 对局 ══════════ -->
+<section id="v-game" class="view gameShell hidden">
+  <aside class="col colLeft panel">
+    <h4 id="briefTitle">你的身份</h4>
+    <div id="brief" class="brief scrollY"></div>
+  </aside>
+
+  <main class="col colMid">
+    <!-- 剧本杀：记录 / 时间线板 两个视图切换 -->
+    <div id="midTabs" class="midTabs hidden">
+      <button class="midTab on" data-t="log">记录</button>
+      <button class="midTab" data-t="board">时间线板 <i id="noteCount"></i></button>
+    </div>
+    <!-- 谁是卧底用对照板：这游戏就是横着比谁说得不对劲，聊天流看不出来 -->
+    <div id="spyBoard" class="spyBoard scrollY hidden"></div>
+    <div id="tlBoard" class="tlBoard scrollY hidden"></div>
+    <div id="log" class="logScroll" role="log" aria-live="polite" aria-relevant="additions"></div>
+    <button id="btnToBottom" class="toBottom hidden" title="回到最新">↓ 新消息</button>
+    <div id="action"></div>
+  </main>
+
+  <aside class="col colRight panel">
+    <h4>在场</h4>
+    <div id="roster"></div>
+    <div id="sideExtra"></div>
+  </aside>
+</section>
+
+<!-- ══════════ 探案 ══════════ -->
+<section id="v-case" class="view caseShell hidden">
+  <!-- 左：此刻你能做什么。查看、找谁说话、去哪儿，全是文字选项 -->
+  <aside class="caseCol caseHere panel scrollY">
+    <div class="hereHd">
+      <div id="sceneName" class="hereName"></div>
+      <div id="sceneDesc" class="hereDesc"></div>
+    </div>
+
+    <h5 class="csHd">现场</h5>
+    <div id="sceneSpots" class="optList"></div>
+
+    <h5 class="csHd">在场的人</h5>
+    <div id="scenePeople" class="optList"></div>
+
+    <h5 class="csHd">去哪儿</h5>
+    <div id="csGo" class="optList"></div>
+  </aside>
+
+  <!-- 中：叙述与行动 -->
+  <main class="caseCol caseMain">
+    <div id="caseLog" class="caseLog scrollY" role="log" aria-live="polite"></div>
+    <button id="caseToBottom" class="toBottom hidden" title="回到最新">↓ 新消息</button>
+    <div id="caseAct" class="caseAct"></div>
+  </main>
+
+  <!-- 右：手里攒下的东西 -->
+  <aside class="caseCol caseSide panel">
+    <h5 class="csHd">证物 <b id="evCount">0 / 0</b></h5>
+    <div id="csEv" class="csPane scrollY"></div>
+    <button id="btnAccuse" class="primary accuseBtn">指认凶手</button>
+  </aside>
+</section>
+
+<!-- ══════════ 复盘 ══════════ -->
+<section id="v-reveal" class="view wrap hidden">
+  <div id="reveal" class="reveal"></div>
+  <div class="row" style="justify-content:center;margin:26px 0">
+    <button id="btnAgain" class="primary">再来一局</button>
+    <button id="btnHome2">回大厅</button>
+  </div>
+</section>
+
+<script type="module" src="/app.js"></script>

@@ -1,0 +1,19 @@
+# 密钥与本机设置——绝不能进版本库
+.env
+data/user_config.json
+
+# 运行产物
+data/games/
+data/generated/
+*.log
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+
+# 本机 IDE / 助手配置
+.claude/
+
+# 用 AI 生成的本子 / 案子（本机内容，不随仓库发布；想分享的挑出来去掉 ai_ 前缀再提交）
+data/scripts/community/ai_*.json
+data/cases/case_ai_*.json

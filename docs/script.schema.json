@@ -1,0 +1,794 @@
+{
+  "$defs": {
+    "ActBlock": {
+      "description": "某个角色在第 N 幕开场时多收到的一页剧本。\n\n三幕本的核心：第二幕不是「再搜一轮」，而是每个人收到一段**只有自己知道**的\n新信息，而且它通常会推翻他第一幕里说过的话——所有人的证词要重新对一遍。\n线下本能撑几个小时，靠的正是同一批信息被反复推翻重估，不是内容多。",
+      "properties": {
+        "act": {
+          "title": "Act",
+          "type": "integer"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "observations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observations",
+          "type": "array"
+        },
+        "goals": {
+          "items": {
+            "$ref": "#/$defs/PersonalGoal"
+          },
+          "title": "Goals",
+          "type": "array"
+        },
+        "secret_add": {
+          "default": "",
+          "title": "Secret Add",
+          "type": "string"
+        },
+        "retract_goals": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Retract Goals",
+          "type": "array"
+        },
+        "restore_slots": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Restore Slots",
+          "type": "array"
+        },
+        "grant_clues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Grant Clues",
+          "type": "array"
+        }
+      },
+      "required": [
+        "act",
+        "text"
+      ],
+      "title": "ActBlock",
+      "type": "object"
+    },
+    "AvatarSpec": {
+      "description": "头像特征。显式声明而非随机生成——老管家必须看着像老人。\n\nhair:       short buzz bun long updo balding bald cap hood\nhair_color: black darkbrown gray white auburn\nskin:       light mid tan deep\ngarment:    indigo crimson olive plum teal ochre slate rust moss wine\naccessory:  none glasses round_glasses mustache beard scarf goggles earrings",
+      "properties": {
+        "hair": {
+          "default": "short",
+          "title": "Hair",
+          "type": "string"
+        },
+        "hair_color": {
+          "default": "black",
+          "title": "Hair Color",
+          "type": "string"
+        },
+        "skin": {
+          "default": "mid",
+          "title": "Skin",
+          "type": "string"
+        },
+        "garment": {
+          "default": "slate",
+          "title": "Garment",
+          "type": "string"
+        },
+        "accessory": {
+          "default": "none",
+          "title": "Accessory",
+          "type": "string"
+        }
+      },
+      "title": "AvatarSpec",
+      "type": "object"
+    },
+    "Case": {
+      "properties": {
+        "victim": {
+          "title": "Victim",
+          "type": "string"
+        },
+        "death_slot": {
+          "title": "Death Slot",
+          "type": "string"
+        },
+        "death_location": {
+          "title": "Death Location",
+          "type": "string"
+        },
+        "weapon": {
+          "title": "Weapon",
+          "type": "string"
+        },
+        "cause": {
+          "title": "Cause",
+          "type": "string"
+        },
+        "body_found_by": {
+          "title": "Body Found By",
+          "type": "string"
+        },
+        "body_found_slot": {
+          "title": "Body Found Slot",
+          "type": "string"
+        }
+      },
+      "required": [
+        "victim",
+        "death_slot",
+        "death_location",
+        "weapon",
+        "cause",
+        "body_found_by",
+        "body_found_slot"
+      ],
+      "title": "Case",
+      "type": "object"
+    },
+    "Character": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "public_role": {
+          "title": "Public Role",
+          "type": "string"
+        },
+        "avatar": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AvatarSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "private_secret": {
+          "title": "Private Secret",
+          "type": "string"
+        },
+        "motive": {
+          "title": "Motive",
+          "type": "string"
+        },
+        "is_murderer": {
+          "default": false,
+          "title": "Is Murderer",
+          "type": "boolean"
+        },
+        "is_npc": {
+          "default": false,
+          "title": "Is Npc",
+          "type": "boolean"
+        },
+        "personality": {
+          "title": "Personality",
+          "type": "string"
+        },
+        "speech_style": {
+          "title": "Speech Style",
+          "type": "string"
+        },
+        "voice": {
+          "default": "",
+          "title": "Voice",
+          "type": "string"
+        },
+        "sample_lines": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Sample Lines",
+          "type": "array"
+        },
+        "personal_goals": {
+          "items": {
+            "$ref": "#/$defs/PersonalGoal"
+          },
+          "title": "Personal Goals",
+          "type": "array"
+        },
+        "cover_story": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CoverStory"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "acts": {
+          "items": {
+            "$ref": "#/$defs/ActBlock"
+          },
+          "title": "Acts",
+          "type": "array"
+        },
+        "amnesia_slots": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Amnesia Slots",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "public_role",
+        "private_secret",
+        "motive",
+        "personality",
+        "speech_style"
+      ],
+      "title": "Character",
+      "type": "object"
+    },
+    "Clue": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "reveals": {
+          "default": "",
+          "title": "Reveals",
+          "type": "string"
+        },
+        "points_to": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Points To",
+          "type": "array"
+        },
+        "is_red_herring": {
+          "default": false,
+          "title": "Is Red Herring",
+          "type": "boolean"
+        },
+        "difficulty": {
+          "default": 1,
+          "title": "Difficulty",
+          "type": "integer"
+        },
+        "synth": {
+          "default": false,
+          "title": "Synth",
+          "type": "boolean"
+        },
+        "from_clues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "From Clues",
+          "type": "array"
+        },
+        "granted": {
+          "default": false,
+          "title": "Granted",
+          "type": "boolean"
+        },
+        "combine_note": {
+          "default": "",
+          "title": "Combine Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "location",
+        "text"
+      ],
+      "title": "Clue",
+      "type": "object"
+    },
+    "CoverStory": {
+      "description": "只有凶手有。预生成的假口供——不让 AI 现编谎话，是一致性的关键。",
+      "properties": {
+        "claim": {
+          "default": "",
+          "title": "Claim",
+          "type": "string"
+        },
+        "fake_timeline": {
+          "items": {
+            "$ref": "#/$defs/FakeTimelineEntry"
+          },
+          "title": "Fake Timeline",
+          "type": "array"
+        },
+        "weak_points": {
+          "items": {
+            "$ref": "#/$defs/CoverStoryWeakPoint"
+          },
+          "title": "Weak Points",
+          "type": "array"
+        },
+        "redirect_targets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Redirect Targets",
+          "type": "array"
+        },
+        "redirect_hook": {
+          "default": "",
+          "title": "Redirect Hook",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fake_timeline"
+      ],
+      "title": "CoverStory",
+      "type": "object"
+    },
+    "CoverStoryWeakPoint": {
+      "properties": {
+        "clue_id": {
+          "title": "Clue Id",
+          "type": "string"
+        },
+        "risk": {
+          "title": "Risk",
+          "type": "string"
+        },
+        "fallback": {
+          "title": "Fallback",
+          "type": "string"
+        }
+      },
+      "required": [
+        "clue_id",
+        "risk",
+        "fallback"
+      ],
+      "title": "CoverStoryWeakPoint",
+      "type": "object"
+    },
+    "FakeTimelineEntry": {
+      "properties": {
+        "slot": {
+          "title": "Slot",
+          "type": "string"
+        },
+        "claimed_location": {
+          "title": "Claimed Location",
+          "type": "string"
+        },
+        "claimed_action": {
+          "title": "Claimed Action",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slot",
+        "claimed_location",
+        "claimed_action"
+      ],
+      "title": "FakeTimelineEntry",
+      "type": "object"
+    },
+    "Interlude": {
+      "description": "幕间突发事件。\n\n在第一幕结束后砸下来，作用是**推翻玩家刚建立起来的结论**——\n尸检改了死亡时间、有人翻供、新证物送到。没有这一下，\n整局就是「搜证→发言→投票」一条直线，太好走。\n\neffect：\n  none           只是一段旁白\n  reveal_clue    把 clue_id 那条线索直接公开给所有人\n  unlock_location 地图上多出一个可搜的新地点",
+      "properties": {
+        "at": {
+          "default": "act2",
+          "title": "At",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "effect": {
+          "default": "none",
+          "enum": [
+            "none",
+            "reveal_clue",
+            "unlock_location"
+          ],
+          "title": "Effect",
+          "type": "string"
+        },
+        "clue_id": {
+          "default": "",
+          "title": "Clue Id",
+          "type": "string"
+        },
+        "location": {
+          "default": "",
+          "title": "Location",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "text"
+      ],
+      "title": "Interlude",
+      "type": "object"
+    },
+    "Meta": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "player_count": {
+          "title": "Player Count",
+          "type": "integer"
+        },
+        "difficulty": {
+          "enum": [
+            "easy",
+            "medium",
+            "hard"
+          ],
+          "title": "Difficulty",
+          "type": "string"
+        },
+        "estimated_minutes": {
+          "title": "Estimated Minutes",
+          "type": "integer"
+        },
+        "template": {
+          "title": "Template",
+          "type": "string"
+        },
+        "tagline": {
+          "default": "",
+          "title": "Tagline",
+          "type": "string"
+        },
+        "acts": {
+          "default": 2,
+          "title": "Acts",
+          "type": "integer"
+        },
+        "search_budget": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Search Budget",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "author": {
+          "default": "",
+          "title": "Author",
+          "type": "string"
+        },
+        "spec_version": {
+          "default": 1,
+          "title": "Spec Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "title",
+        "player_count",
+        "difficulty",
+        "estimated_minutes",
+        "template"
+      ],
+      "title": "Meta",
+      "type": "object"
+    },
+    "PersonalGoal": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "conceal",
+            "acquire",
+            "protect",
+            "expose"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "type"
+      ],
+      "title": "PersonalGoal",
+      "type": "object"
+    },
+    "Setting": {
+      "properties": {
+        "public_background": {
+          "title": "Public Background",
+          "type": "string"
+        },
+        "map": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Map",
+          "type": "array"
+        },
+        "time_slots": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Time Slots",
+          "type": "array"
+        }
+      },
+      "required": [
+        "public_background",
+        "map",
+        "time_slots"
+      ],
+      "title": "Setting",
+      "type": "object"
+    },
+    "Solution": {
+      "properties": {
+        "murderer": {
+          "title": "Murderer",
+          "type": "string"
+        },
+        "reasoning_chain": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasoning Chain",
+          "type": "array"
+        },
+        "minimum_clues_required": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Minimum Clues Required",
+          "type": "array"
+        },
+        "questions": {
+          "items": {
+            "$ref": "#/$defs/TruthQuestion"
+          },
+          "title": "Questions",
+          "type": "array"
+        },
+        "question_pass": {
+          "default": 0.6,
+          "title": "Question Pass",
+          "type": "number"
+        }
+      },
+      "required": [
+        "murderer",
+        "reasoning_chain",
+        "minimum_clues_required"
+      ],
+      "title": "Solution",
+      "type": "object"
+    },
+    "TimelineEntry": {
+      "properties": {
+        "slot": {
+          "title": "Slot",
+          "type": "string"
+        },
+        "char": {
+          "title": "Char",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "witnessed_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Witnessed By",
+          "type": "array"
+        },
+        "observed": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observed",
+          "type": "array"
+        },
+        "is_crime_action": {
+          "default": false,
+          "title": "Is Crime Action",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "slot",
+        "char",
+        "location",
+        "action"
+      ],
+      "title": "TimelineEntry",
+      "type": "object"
+    },
+    "TruthOption": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "text"
+      ],
+      "title": "TruthOption",
+      "type": "object"
+    },
+    "TruthQuestion": {
+      "description": "分层真相里的一问。\n\n原来整局只有一个问题：谁是凶手。票对了就算赢。\n现在可以问：谁先动的手、谁在替他掩护、他是怎么死的……各自判分。\n全部是选择题（人 / 地点 / 自定义选项），**纯代码判分，不调 LLM**——\n胜负口径必须是确定的，这条在 engine.py 文件头就写明了。",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "prompt": {
+          "title": "Prompt",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "character",
+            "location",
+            "choice"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/TruthOption"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "answer": {
+          "title": "Answer",
+          "type": "string"
+        },
+        "points": {
+          "default": 1,
+          "title": "Points",
+          "type": "integer"
+        },
+        "explain": {
+          "default": "",
+          "title": "Explain",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "prompt",
+        "kind",
+        "answer"
+      ],
+      "title": "TruthQuestion",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "script_id": {
+      "title": "Script Id",
+      "type": "string"
+    },
+    "meta": {
+      "$ref": "#/$defs/Meta"
+    },
+    "setting": {
+      "$ref": "#/$defs/Setting"
+    },
+    "case": {
+      "$ref": "#/$defs/Case"
+    },
+    "characters": {
+      "items": {
+        "$ref": "#/$defs/Character"
+      },
+      "title": "Characters",
+      "type": "array"
+    },
+    "timeline": {
+      "items": {
+        "$ref": "#/$defs/TimelineEntry"
+      },
+      "title": "Timeline",
+      "type": "array"
+    },
+    "clues": {
+      "items": {
+        "$ref": "#/$defs/Clue"
+      },
+      "title": "Clues",
+      "type": "array"
+    },
+    "solution": {
+      "$ref": "#/$defs/Solution"
+    },
+    "interludes": {
+      "items": {
+        "$ref": "#/$defs/Interlude"
+      },
+      "title": "Interludes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "script_id",
+    "meta",
+    "setting",
+    "case",
+    "characters",
+    "timeline",
+    "clues",
+    "solution"
+  ],
+  "title": "Script",
+  "type": "object"
+}
